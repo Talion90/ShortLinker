@@ -1,0 +1,11 @@
+Dear user {{ user.username }}!
+
+we have received your request to register an account
+on Short Linker website.
+
+TO CONFIRM ACCOUNT REGISTRATION
+
+Click the following link to confirm your email address
+and to activate your personal account
+
+{{ host }}{% url 'main:register_activate' sign=sign %}

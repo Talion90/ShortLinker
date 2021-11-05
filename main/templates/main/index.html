@@ -1,0 +1,28 @@
+{% extends "layout/basic.html" %}
+
+{% load bootstrap4 %}
+{% load static %}
+
+{% block title %}{{ index }}{% endblock %}
+
+{% block content %}
+    <body class="text-center mx-auto">
+        <h2 class="h3 mb-3 font-weight-normal" style="margin-top:50px">Generate short link</h2>
+        <div class="container-xl" style="margin-top:50px">
+            <form method="post" class="form-signin" style="color:white">
+                {% csrf_token %}
+                {% bootstrap_form form layout='inline' %}
+                {% bootstrap_button content="Generate" button_class="btn btn-success" extra_classes="margin-top:20px" %}
+            </form>
+                <div style="margin-top: 20px" class="card text-center bg-dark">
+                  <div class="card-body">
+                      {% if short_link %}
+                          <h3 class="card-title">{{ short_link }}</h3>
+                      {% else %}
+                          <h5 class="card-title">Short link</h5>
+                  </div>
+                </div>
+            {% endif %}
+        </div>
+    </body>
+{% endblock %}

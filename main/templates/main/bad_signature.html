@@ -1,0 +1,11 @@
+{% extends 'layout/basic.html' %}
+
+{% block title %}
+    Activation failed
+{% endblock %}
+
+{% block content %}
+    <h2>Activation </h2>
+    <p>Activation failed</p>
+    <p><a href="{% url 'main:register' %}">Try again</a></p>
+{% endblock %}
