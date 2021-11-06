@@ -17,7 +17,7 @@
                 <div style="margin-top: 20px" class="card text-center bg-dark">
                   <div class="card-body">
                       {% if short_link %}
-                          <h3 class="card-title">{{ short_link }}</h3>
+                          <a class="card-title" href="{{ long_link }}">{{ short_link }}</a>
                       {% else %}
                           <h5 class="card-title">Short link</h5>
                   </div>

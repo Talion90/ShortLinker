@@ -8,7 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView,
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.signing import BadSignature
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.exceptions import TemplateDoesNotExist
 from django.template.loader import get_template
 from django.urls import reverse_lazy
@@ -27,16 +27,20 @@ def home(request):
         link_form = LinkForm(request.POST)
         context = {'form': link_form}
         if link_form.is_valid():
-            short_link = 'https://sl/' + UrlShorten.create_unique(str(link_form['long_link']))
+            token = UrlShorten.create_unique(str(link_form['long_link']))
+            short_link = request.get_host() + '/' + token
+            long_link = link_form.cleaned_data['long_link']
             if request.user.is_authenticated:
                 try:
                     Link.objects.get_or_create(
                         user=request.user,
-                        long_link=link_form.cleaned_data['long_link'],
-                        short_link=short_link
+                        long_link=long_link,
+                        short_link=short_link,
+                        token=token
                     )
                 except IntegrityError:
                     pass
+            context['long_link'] = long_link
             context['short_link'] = short_link
             return render(request, 'main/index.html', context)
         return render(request, 'main/index.html', context)
@@ -54,6 +58,11 @@ def other_page(request, page):
     return HttpResponse(template.render(request=request))
 
 
+def redirect_page(request, token):
+    redirect_link = get_object_or_404(Link, token=token).long_link
+    return redirect(redirect_link)
+
+
 class SLLoginView(LoginView):
     template_name = 'main/login.html'
 
@@ -61,8 +70,10 @@ class SLLoginView(LoginView):
 @login_required
 def profile(request):
     links = Link.objects.filter(user=request.user.id).all()
-    context = {'links': links}
-    return render(request, 'main/profile.html', context)
+    if links:
+        context = {'links': links}
+        return render(request, 'main/profile.html', context)
+    return render(request, 'main/profile.html')
 
 
 class SLLogoutView(LoginRequiredMixin, LogoutView):

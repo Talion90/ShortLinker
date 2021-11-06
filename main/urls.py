@@ -1,6 +1,6 @@
 from django.urls import path
 
-from main.views import home
+from main.views import home, redirect_page
 from main.views import other_page
 from main.views import SLLoginView
 from main.views import profile
@@ -33,5 +33,6 @@ urlpatterns = [
 
     path('accounts/profile/delete/', DeleteUserView.as_view(), name='profile_delete'),
     path('<str:page>/', other_page, name='other'),
+    path('<str:token>/', redirect_page, name='link'),
     path('', home, name='index'),
 ]

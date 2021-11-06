@@ -11,7 +11,7 @@ class LinkForm(forms.Form):
 
 
 class ChangeUserInfoForm(forms.ModelForm):
-    email = forms.EmailField(required=True, label='Адрес электронной почты')
+    email = forms.EmailField(required=True, label='Email')
 
     class Meta:
         model = User
@@ -20,13 +20,13 @@ class ChangeUserInfoForm(forms.ModelForm):
 
 class RegisterUserForm(forms.ModelForm):
 
-    email = forms.EmailField(required=True, label='Адрес электронной почты')
-    password1 = forms.CharField(label='Пароль',
+    email = forms.EmailField(required=True, label='Email')
+    password1 = forms.CharField(label='Password',
                                 widget=forms.PasswordInput,
                                 help_text=password_validation.password_validators_help_text_html())
-    password2 = forms.CharField(label='Пароль (повторно)',
+    password2 = forms.CharField(label='Password (again)',
                                 widget=forms.PasswordInput,
-                                help_text='Введите тот же самый пароль для проверки')
+                                help_text='Enter the same password for check')
 
     def clean_password1(self):
         password1 = self.cleaned_data['password1']
@@ -39,7 +39,7 @@ class RegisterUserForm(forms.ModelForm):
         password1 = self.cleaned_data['password1']
         password2 = self.cleaned_data['password2']
         if password1 and password2 and password1 != password2:
-            errors = {'password2': ValidationError('введенные пароли не совпадают', code='password_mismatch')}
+            errors = {'password2': ValidationError("passwords don't matched", code='password_mismatch')}
             raise ValidationError(errors)
 
     def save(self, commit=True):
