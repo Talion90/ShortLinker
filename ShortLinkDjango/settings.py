@@ -3,8 +3,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = os.environ.get("SECRET_KEY")
-SECRET_KEY = 'django-insecure-7d4v-54_3-6#lh(aa_#^eo)qr#!m)*(6k#g!pp_u%zut@xwz+z'
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -52,24 +52,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ShortLinkDjango.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': os.environ.get('DB_HOST'),
-#         'NAME': os.environ.get('DB_NAME'),
-#         'USER': os.environ.get('DB_USER'),
-#         'PASSWORD': os.environ.get('DB_PASS'),
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-        'NAME': 'shortlinker',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
     }
 }
 
